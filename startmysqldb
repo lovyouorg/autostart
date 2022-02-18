@@ -1,0 +1,11 @@
+#!/bin/bash
+startmysqldb(){
+  ps -ef|grep mysql-datatable|grep -v grep|awk '{print $2}'|xargs kill -9
+  nohup java -XX:+UseG1GC -Xms7168m -Xmx7168m -Dserver.port=10014 -jar /opt/jar/mysql-datatable.jar >/dev/null 2>&1 &
+}
+curl 10.248.27.210:10014/git-version
+if [ $? = 0 ];then
+exit
+else
+  startmysqldb
+fi
